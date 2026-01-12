@@ -1,0 +1,32 @@
+# Tasks: Core Essentials (Phase I)
+
+**Input**: Design documents from `/specs/core-essentials/`
+**Prerequisites**: plan.md, spec.md
+
+## Phase 1: Setup
+
+- [ ] T001 Create `src/` directory at repository root
+- [ ] T002 Create `src/app.py` wrapper
+
+## Phase 2: Foundational
+
+- [ ] T003 Define `Task` data structure and Global `tasks` list in `src/app.py`
+- [ ] T004 Implement `clear_screen()` and `display_header()` utilities in `src/app.py`
+
+## Phase 3: User Story 1 - Task Management Basics (Priority: P1) 🎯 MVP
+
+- [ ] T005 [P] [US1] Implement `view_tasks()` function in `src/app.py`
+- [ ] T006 [P] [US1] Implement `add_task()` function in `src/app.py`
+- [ ] T007 [US1] Implement main menu loop to link View and Add
+
+## Phase 4: User Story 2 - Task Lifecycle (Priority: P2)
+
+- [ ] T008 [P] [US2] Implement `complete_task()` function in `src/app.py`
+- [ ] T009 [P] [US2] Implement `update_task()` function in `src/app.py`
+- [ ] T010 [P] [US2] Implement `delete_task()` function in `src/app.py`
+- [ ] T011 [US2] Link Complete, Update, and Delete to the main menu
+
+## Phase 5: Polish
+
+- [ ] T012 Add simple error handling for invalid menu choices and non-existent IDs
+- [ ] T013 Final verification of all user stories via manual walkthrough
