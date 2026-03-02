@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select
+from sqlalchemy.orm import selectinload
 from typing import List, Optional
 from uuid import UUID
-from .database import get_session
-from .models import Todo, Tag, TodoCreate, TodoUpdate, TodoTagLink
+from database import get_session
+from models import Todo, Tag, TodoCreate, TodoUpdate, TodoTagLink
 
 router = APIRouter(prefix="/todos", tags=["todos"])
 
@@ -25,8 +26,16 @@ def create_todo(todo_in: TodoCreate, session: Session = Depends(get_session)):
         db_todo.tags = get_or_create_tags(session, todo_in.tag_names)
     session.add(db_todo)
     session.commit()
-    session.refresh(db_todo)
+    
+    # Reload with tags and children
+    statement = select(Todo).where(Todo.id == db_todo.id).options(
+        selectinload(Todo.tags),
+        selectinload(Todo.children)
+    )
+    db_todo = session.exec(statement).first()
     return db_todo
+
+# from sqlalchemy.orm import selectinload
 
 @router.get("/", response_model=List[Todo])
 def read_todos(
@@ -35,9 +44,13 @@ def read_todos(
     search: Optional[str] = None,
     priority: Optional[str] = None,
     is_completed: Optional[bool] = None,
+    sort_by_due_date: bool = False,
     session: Session = Depends(get_session)
 ):
-    statement = select(Todo)
+    statement = select(Todo).options(
+        selectinload(Todo.tags),
+        selectinload(Todo.children)
+    )
     if search:
         statement = statement.where(Todo.description.contains(search))
     if priority:
@@ -45,12 +58,19 @@ def read_todos(
     if is_completed is not None:
         statement = statement.where(Todo.is_completed == is_completed)
     
+    if sort_by_due_date:
+        statement = statement.order_by(Todo.due_date.asc())
+    
     todos = session.exec(statement.offset(offset).limit(limit)).all()
     return todos
 
 @router.get("/{todo_id}", response_model=Todo)
 def read_todo(todo_id: UUID, session: Session = Depends(get_session)):
-    todo = session.get(Todo, todo_id)
+    statement = select(Todo).where(Todo.id == todo_id).options(
+        selectinload(Todo.tags),
+        selectinload(Todo.children)
+    )
+    todo = session.exec(statement).first()
     if not todo:
         raise HTTPException(status_code=404, detail="Todo not found")
     return todo
@@ -71,7 +91,13 @@ def update_todo(todo_id: UUID, todo_in: TodoUpdate, session: Session = Depends(g
         
     session.add(db_todo)
     session.commit()
-    session.refresh(db_todo)
+    
+    # Reload with tags and children
+    statement = select(Todo).where(Todo.id == db_todo.id).options(
+        selectinload(Todo.tags),
+        selectinload(Todo.children)
+    )
+    db_todo = session.exec(statement).first()
     return db_todo
 
 @router.delete("/{todo_id}")

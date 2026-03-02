@@ -25,8 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen relative`}
       >
+        <div className="mesh-bg">
+          <div className="mesh-circle circle-1" />
+          <div className="mesh-circle circle-2" />
+          <div className="mesh-circle circle-3" />
+        </div>
         {children}
       </body>
     </html>

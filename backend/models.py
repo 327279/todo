@@ -23,12 +23,22 @@ class TodoBase(SQLModel):
     description: str
     is_completed: bool = False
     priority: Priority = Priority.MEDIUM
+    due_date: Optional[datetime] = Field(default=None)
+    parent_id: Optional[UUID] = Field(default=None, foreign_key="todo.id")
+    assignee: Optional[str] = Field(default=None)
 
 class Todo(TodoBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
     tags: List[Tag] = Relationship(back_populates="todos", link_model=TodoTagLink)
+    
+    # Self-referential relationship for sub-tasks
+    parent: Optional["Todo"] = Relationship(
+        back_populates="children", 
+        sa_relationship_kwargs={"remote_side": "Todo.id"}
+    )
+    children: List["Todo"] = Relationship(back_populates="parent")
 
 class TodoCreate(TodoBase):
     tag_names: Optional[List[str]] = []
@@ -37,4 +47,7 @@ class TodoUpdate(SQLModel):
     description: Optional[str] = None
     is_completed: Optional[bool] = None
     priority: Optional[Priority] = None
+    due_date: Optional[datetime] = None
     tag_names: Optional[List[str]] = None
+    parent_id: Optional[UUID] = None
+    assignee: Optional[str] = None

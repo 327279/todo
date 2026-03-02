@@ -10,20 +10,20 @@
 - [x] T003 Configure database connection in `backend/database.py`
 - [x] T004 Implement CRUD endpoints in `backend/routes.py`
 - [x] T005 Set up main entry point and CORS in `backend/main.py`
-- [ ] T006 [P] Create manual test script for API endpoints
+- [x] T006 [P] Create manual test script for API endpoints
 
 ## Phase 2: Frontend Development
 
-- [ ] T007 Initialize `frontend/` directory using Next.js (Tailwind CSS, App Router)
-- [ ] T008 Configure environment variables for API URL
-- [ ] T009 [P] Create API utility library in `frontend/lib/api.ts`
-- [ ] T010 Create core UI layout and theme (Panaversity aesthetic)
-- [ ] T011 Implement Todo List component with fetch logic
-- [ ] T012 Implement Add/Edit Modal/Form
-- [ ] T013 Implement filtering, searching, and sorting logic in UI
+- [x] T007 Initialize `frontend/` directory using Next.js (Tailwind CSS, App Router)
+- [x] T008 Configure environment variables for API URL
+- [x] T009 [P] Create API utility library in `frontend/lib/api.ts`
+- [x] T010 Create core UI layout and theme (Panaversity aesthetic)
+- [x] T011 Implement Todo List component with fetch logic
+- [x] T012 Implement Add/Edit Modal/Form
+- [x] T013 Implement filtering, searching, and sorting logic in UI
 
 ## Phase 3: Integration & Polish
 
-- [ ] T014 Verify end-to-end flow between Next.js and FastAPI
-- [ ] T015 Polish dark mode and animations
-- [ ] T016 Final verification against all SCs and FRs
+- [x] T014 Verify end-to-end flow between Next.js and FastAPI
+- [x] T015 Polish dark mode and animations
+- [x] T016 Final verification against all SCs and FRs
